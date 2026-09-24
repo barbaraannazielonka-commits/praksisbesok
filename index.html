@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Praksisbesøk – observasjonsskjema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #EEECE3;
+    --paper-raised: #F7F5EE;
+    --ink: #1E2A32;
+    --ink-soft: #55636B;
+    --steel: #3E5C6B;
+    --line: #C9C4B4;
+    --orange: #C94F0E;
+    --orange-soft: #F1DCC9;
+    --green: #2F6D3B;
+    --green-soft: #DCE9DC;
+    --red: #A6321C;
+    --red-soft: #F1DAD2;
+    --blue: #1D5DA6;
+    --blue-soft: #D9E4F1;
+    --font-display: 'Archivo', 'Arial Narrow', sans-serif;
+    --font-body: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #191C1B;
+      --paper-raised: #212423;
+      --ink: #ECE8DF;
+      --ink-soft: #A9AFA8;
+      --steel: #8FA3AE;
+      --line: #3A3D38;
+      --orange: #E8712E;
+      --orange-soft: #3A2A1C;
+      --green: #6BB876;
+      --green-soft: #223224;
+      --red: #E2685A;
+      --red-soft: #34211D;
+      --blue: #6FA8DC;
+      --blue-soft: #1E2B38;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #191C1B;
+    --paper-raised: #212423;
+    --ink: #ECE8DF;
+    --ink-soft: #A9AFA8;
+    --steel: #8FA3AE;
+    --line: #3A3D38;
+    --orange: #E8712E;
+    --orange-soft: #3A2A1C;
+    --green: #6BB876;
+    --green-soft: #223224;
+    --red: #E2685A;
+    --red-soft: #34211D;
+    --blue: #6FA8DC;
+    --blue-soft: #1E2B38;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+
+  header.top {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 20;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 14px 0 16px;
+    border-bottom: 3px solid var(--orange);
+  }
+  header.top .wrap { padding-top: env(safe-area-inset-top, 0px); }
+  .top-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 21px;
+    margin: 0;
+    letter-spacing: 0.2px;
+  }
+  h1 span { color: var(--orange); }
+  .top-actions { display: flex; gap: 8px; }
+  .ghost-btn {
+    background: transparent;
+    border: 1px solid rgba(238,236,227,0.4);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13px;
+    padding: 7px 12px;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  .ghost-btn:hover { border-color: var(--paper); }
+
+  .meta-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 10px;
+    margin-top: 14px;
+  }
+  .meta-field { display: flex; flex-direction: column; gap: 3px; }
+  .meta-field.full { grid-column: 1 / -1; }
+  .meta-field label {
+    font-size: 11px;
+    text-transform: none;
+    color: rgba(238,236,227,0.75);
+    font-weight: 500;
+  }
+  .meta-field input, .meta-field select {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(238,236,227,0.3);
+    color: var(--paper);
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 7px 8px;
+    border-radius: 3px;
+  }
+  .meta-field input::placeholder { color: rgba(238,236,227,0.4); }
+  .meta-field select option { color: #111; }
+
+  .progress-row {
+    margin-top: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .progress-label { font-size: 12px; color: rgba(238,236,227,0.8); white-space: nowrap; }
+  .ticks { display: flex; gap: 3px; flex-wrap: wrap; flex: 1; }
+  .tick {
+    width: 12px; height: 12px;
+    border: 1px solid rgba(238,236,227,0.5);
+    border-radius: 1px;
+  }
+  .tick.done { background: var(--orange); border-color: var(--orange); }
+
+  main { padding-top: 18px; }
+
+  .section-divider {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+    color: var(--ink-soft);
+    margin: 22px 0 10px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--line);
+  }
+  .section-divider:first-child { margin-top: 0; }
+
+  .category {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-left-width: 5px;
+    margin-bottom: 16px;
+    padding: 14px 14px 12px;
+    border-radius: 2px;
+  }
+  .category[data-weight="høy"] { border-left-color: var(--orange); }
+  .category[data-weight="middels"] { border-left-color: var(--steel); }
+  .category[data-weight="lav"] { border-left-color: var(--line); }
+
+  .cat-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .cat-name-input {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16.5px;
+    color: var(--ink);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    padding: 2px 0;
+    width: 100%;
+  }
+  .cat-name-input:focus { outline: none; border-bottom: 1px solid var(--line); }
+  .weight-select {
+    font-family: var(--font-body);
+    font-size: 11.5px;
+    font-weight: 600;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 4px 6px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .cat-remove {
+    background: none; border: none; color: var(--ink-soft);
+    font-size: 13px; cursor: pointer; padding: 2px 4px;
+  }
+  .cat-remove:hover { color: var(--red); }
+
+  .item {
+    padding: 10px 0;
+    border-top: 1px solid var(--line);
+  }
+  .item:first-of-type { border-top: none; }
+  .item-row { display: flex; align-items: flex-start; gap: 6px; }
+  .item-text {
+    flex: 1;
+    background: transparent;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    padding: 2px 0;
+    resize: none;
+    line-height: 1.4;
+  }
+  .item-text:focus { outline: none; }
+  .item-remove {
+    background: none; border: none; color: var(--ink-soft);
+    font-size: 15px; line-height: 1; cursor: pointer; padding: 2px 4px;
+    flex-shrink: 0;
+  }
+  .item-remove:hover { color: var(--red); }
+
+  .rating-row {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .rate-btn {
+    font-family: var(--font-body);
+    font-size: 12.5px;
+    font-weight: 600;
+    padding: 6px 10px;
+    border-radius: 2px;
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+  .rate-btn[data-val="avvik"] { color: var(--red); }
+  .rate-btn[data-val="forventet"] { color: var(--blue); }
+  .rate-btn[data-val="utmerket"] { color: var(--green); }
+  .rate-btn[data-val="avvik"].active { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+  .rate-btn[data-val="forventet"].active { background: var(--blue-soft); border-color: var(--blue); color: var(--blue); }
+  .rate-btn[data-val="utmerket"].active { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+
+  .note-input {
+    width: 100%;
+    margin-top: 7px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed var(--line);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-soft);
+    padding: 3px 0;
+  }
+  .note-input:focus { outline: none; border-bottom-color: var(--steel); }
+  .note-input::placeholder { color: var(--ink-soft); opacity: 0.6; font-style: italic; }
+
+  .add-row {
+    margin-top: 10px;
+    display: flex;
+    gap: 6px;
+  }
+  .add-row input {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 13px;
+    padding: 6px 8px;
+    border: 1px dashed var(--line);
+    background: transparent;
+    color: var(--ink);
+    border-radius: 2px;
+  }
+  .add-link {
+    background: none;
+    border: none;
+    color: var(--steel);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 2px;
+  }
+  .add-link:hover { color: var(--orange); }
+
+  .add-cat-block {
+    border: 1px dashed var(--line);
+    padding: 12px 14px;
+    margin-bottom: 18px;
+    border-radius: 2px;
+  }
+  .add-cat-form { display: none; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .add-cat-form.open { display: flex; }
+  .add-cat-form input[type="text"] {
+    flex: 1; min-width: 160px;
+    font-family: var(--font-body); font-size: 13px;
+    padding: 6px 8px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper);
+    color: var(--ink);
+  }
+  .add-cat-form select {
+    font-family: var(--font-body); font-size: 13px;
+    padding: 6px 8px; border: 1px solid var(--line); border-radius: 2px; background: var(--paper);
+    color: var(--ink);
+  }
+  .small-btn {
+    font-family: var(--font-body); font-weight: 600; font-size: 13px;
+    padding: 6px 12px; border-radius: 2px; border: 1px solid var(--ink);
+    background: var(--ink); color: var(--paper); cursor: pointer;
+  }
+
+  section.helhet {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+  section.helhet h2 {
+    font-family: var(--font-display);
+    font-size: 16px;
+    margin: 0 0 12px;
+  }
+  .helhet-field { margin-bottom: 12px; }
+  .helhet-field:last-child { margin-bottom: 0; }
+  .helhet-field label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    margin-bottom: 4px;
+  }
+  .helhet-field textarea {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 8px;
+    min-height: 56px;
+    resize: vertical;
+  }
+
+  .action-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+  .action-bar button {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 13.5px;
+    padding: 9px 14px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--orange); border: 1px solid var(--orange); color: #fff; }
+  .btn-secondary { background: transparent; border: 1px solid var(--ink); color: var(--ink); }
+  .btn-danger { background: transparent; border: 1px solid var(--red); color: var(--red); margin-left: auto; }
+
+  .site-footer {
+    text-align: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ink-soft);
+    padding: 4px 16px calc(env(safe-area-inset-bottom, 0px) + 20px);
+  }
+
+  .toast {
+    position: fixed;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    left: 50%;
+    transform: translateX(-50%) translateY(8px);
+    background: var(--ink);
+    color: var(--paper);
+    font-size: 13px;
+    padding: 9px 16px;
+    border-radius: 3px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s, transform 0.2s;
+    z-index: 60;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media print {
+    .add-row, .add-cat-block, .action-bar, .item-remove, .cat-remove { display: none !important; }
+    header.top { position: static; border-bottom: 2px solid #000; color: #000; background: #fff; }
+    .meta-field label, .progress-label { color: #333; }
+    .meta-field input, .meta-field select, .ghost-btn { color: #000; border-color: #999; background: #fff; }
+    .ticks { display: none; }
+    body { background: #fff; color: #000; }
+    .category, section.helhet { background: #fff; border-color: #999; }
+  }
+
+  @media (max-width: 380px) {
+    .meta-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="top-row">
+      <h1>Praksis<span>besøk</span></h1>
+    </div>
+    <div class="meta-grid">
+      <div class="meta-field"><label for="mElev">Elev</label><input id="mElev" type="text" placeholder="Navn"></div>
+      <div class="meta-field"><label for="mSted">Praksissted</label><input id="mSted" type="text" placeholder="Bedrift / institusjon"></div>
+      <div class="meta-field"><label for="mType">Type</label>
+        <select id="mType">
+          <option value="Bedrift">Bedrift</option>
+          <option value="Sykehjem">Sykehjem</option>
+          <option value="Sykehus">Sykehus</option>
+          <option value="Annet">Annet</option>
+        </select>
+      </div>
+      <div class="meta-field"><label for="mDato">Dato</label><input id="mDato" type="date"></div>
+      <div class="meta-field"><label for="mVeileder">Veileder på stedet</label><input id="mVeileder" type="text" placeholder="Navn"></div>
+      <div class="meta-field"><label for="mLaerer">Faglærer</label><input id="mLaerer" type="text" placeholder="Navn"></div>
+    </div>
+    <div class="progress-row">
+      <span class="progress-label" id="progressLabel">0/0 punkter vurdert</span>
+      <div class="ticks" id="ticks"></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div id="categories"></div>
+
+  <div class="add-cat-block">
+    <button class="add-link" id="btnShowAddCat" type="button">+ Legg til egen kategori</button>
+    <div class="add-cat-form" id="addCatForm">
+      <input type="text" id="newCatName" placeholder="Navn på kategori">
+      <select id="newCatWeight">
+        <option value="høy">Høy vekt</option>
+        <option value="middels" selected>Middels vekt</option>
+        <option value="lav">Lav vekt</option>
+      </select>
+      <button class="small-btn" id="btnAddCat" type="button">Legg til</button>
+    </div>
+  </div>
+
+  <section class="helhet">
+    <h2>Helhetsvurdering og oppfølging</h2>
+    <div class="helhet-field">
+      <label for="hStyrker">Styrker observert</label>
+      <textarea id="hStyrker" placeholder="Hva mestrer eleven godt?"></textarea>
+    </div>
+    <div class="helhet-field">
+      <label for="hUtvikling">Utviklingsområder</label>
+      <textarea id="hUtvikling" placeholder="Hva bør eleven jobbe videre med?"></textarea>
+    </div>
+    <div class="helhet-field">
+      <label for="hTiltak">Avtalte tiltak til neste besøk</label>
+      <textarea id="hTiltak" placeholder="Konkrete avtaler med elev og veileder"></textarea>
+    </div>
+  </section>
+
+  <div class="action-bar">
+    <button class="btn-primary" id="btnSave" type="button">Lagre besøk</button>
+    <button class="btn-secondary" id="btnPrint" type="button">Skriv ut</button>
+    <button class="btn-secondary" id="btnExport" type="button">Last ned rapport</button>
+    <button class="btn-danger" id="btnDeleteCurrent" type="button">Slett dette besøket</button>
+  </div>
+</main>
+
+<footer class="site-footer">Nannestad videregående skole</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  "use strict";
+
+  var RATE_LABELS = { avvik: "Avvik", forventet: "Som forventet", utmerket: "Utmerket" };
+  var RATE_ORDER = ["avvik", "forventet", "utmerket"];
+  var WEIGHT_LABELS = { "høy": "Høy vekt", "middels": "Middels vekt", "lav": "Lav vekt" };
+  var SECTION_LABELS = { elev: "Elevobservasjon", sted: "Om opplæringsstedet", egne: "Egne kategorier" };
+  var CURRENT_KEY = "praksisbesok:current";
+  var HISTORY_KEY = "praksisbesok:historikk";
+
+  function uid() {
+    return "id" + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  }
+
+  function defaultState() {
+    return {
+      id: uid(),
+      meta: { elev: "", sted: "", type: "Bedrift", dato: "", veileder: "", laerer: "" },
+      categories: [
+        { id: uid(), section: "elev", name: "HMS og sikkerhetskultur", weight: "høy", items: [
+          { id: uid(), text: "Bruk av påbudt personlig verneutstyr (PVU)", rating: null, note: "" },
+          { id: uid(), text: "Ryddig og trygg arbeidsplass (SNO-prinsippet: sikkerhet, orden, ryddighet)", rating: null, note: "" },
+          { id: uid(), text: "Forståelse og overholdelse av risikovurderinger og sikkerhetsinstrukser", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "elev", name: "Faglig utførelse og nøyaktighet", weight: "høy", items: [
+          { id: uid(), text: "Evne til å lese og følge tegninger, prosedyrer og arbeidsbeskrivelser", rating: null, note: "" },
+          { id: uid(), text: "Riktig valg og bruk av verktøy, maskiner og materialer", rating: null, note: "" },
+          { id: uid(), text: "Kvalitetskontroll av eget utført arbeid (egenkontroll)", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "elev", name: "Yrkesetikk, holdninger og kommunikasjon", weight: "middels", items: [
+          { id: uid(), text: "Punktlighet (møter til tiden etter pauser, klar ved arbeidsstart)", rating: null, note: "" },
+          { id: uid(), text: "Kommunikasjon med kunder, kolleger og overordnede (fagspråk og tone)", rating: null, note: "" },
+          { id: uid(), text: "Evne til å ta imot og bruke konstruktiv tilbakemelding", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "elev", name: "Effektivitet og selvstendighet", weight: "middels", items: [
+          { id: uid(), text: "Planlegging av egen arbeidsdag og tidsbruk", rating: null, note: "" },
+          { id: uid(), text: "Initiativ når planlagte oppgaver er fullført", rating: null, note: "" },
+          { id: uid(), text: "Evne til å jobbe selvstendig uten tett oppfølging", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "elev", name: "Trivsel, tilhørighet og samarbeid", weight: "middels", items: [
+          { id: uid(), text: "Integrering i arbeidsmiljøet og relasjon til kolleger", rating: null, note: "" },
+          { id: uid(), text: "Samarbeidsevne i team eller med andre lærlinger", rating: null, note: "" },
+          { id: uid(), text: "Evne til å be om hjelp når det trengs", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "elev", name: "Egenrefleksjon og faglig utvikling", weight: "lav", items: [
+          { id: uid(), text: "Evne til å reflektere over egen læring og sette mål", rating: null, note: "" },
+          { id: uid(), text: "Nysgjerrighet og vilje til å lære nye ting", rating: null, note: "" },
+          { id: uid(), text: "Bevissthet om egne styrker og utviklingsområder", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "sted", name: "Arbeidsmetoder og teknikker", weight: "middels", items: [
+          { id: uid(), text: "Hvordan erfarne fagarbeidere utfører oppgaver", rating: null, note: "" },
+          { id: uid(), text: "Bruk av verktøy, maskiner eller spesialutstyr i det daglige arbeidet", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "sted", name: "HMS og sikkerhetsrutiner", weight: "høy", items: [
+          { id: uid(), text: "Hvordan bedriften ivaretar sikkerhet på arbeidsplassen", rating: null, note: "" },
+          { id: uid(), text: "Bruk av verneutstyr som fast rutine", rating: null, note: "" },
+          { id: uid(), text: "Risikovurdering i hverdagen", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "sted", name: "Kommunikasjon og samarbeid", weight: "middels", items: [
+          { id: uid(), text: "Hvordan kolleger samhandler med hverandre", rating: null, note: "" },
+          { id: uid(), text: "Profesjonell kommunikasjon med kunder, pasienter eller klienter", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "sted", name: "Yrkesetikk og bedriftskultur", weight: "middels", items: [
+          { id: uid(), text: "Normer, regler og oppmøtetider", rating: null, note: "" },
+          { id: uid(), text: "Hvordan man opptrer som profesjonell aktør i bransjen", rating: null, note: "" }
+        ]},
+        { id: uid(), section: "sted", name: "Teori i praksis", weight: "høy", items: [
+          { id: uid(), text: "Hvordan det eleven har lært på skolen brukes til å løse reelle problemer i arbeidslivet", rating: null, note: "" }
+        ]}
+      ],
+      helhet: { styrker: "", utvikling: "", tiltak: "" },
+      createdAt: null,
+      updatedAt: null
+    };
+  }
+
+  var state = null;
+
+  function safeGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  function safeSet(key, val) {
+    try { localStorage.setItem(key, val); return true; } catch (e) { return false; }
+  }
+  function safeRemove(key) {
+    try { localStorage.removeItem(key); } catch (e) {}
+  }
+
+  function loadCurrent() {
+    var raw = safeGet(CURRENT_KEY);
+    if (raw) {
+      try {
+        var parsed = JSON.parse(raw);
+        if (parsed && parsed.categories) return parsed;
+      } catch (e) {}
+    }
+    return defaultState();
+  }
+
+  function loadHistory() {
+    var raw = safeGet(HISTORY_KEY);
+    if (raw) {
+      try {
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (e) {}
+    }
+    return [];
+  }
+
+  function persistCurrent() {
+    safeSet(CURRENT_KEY, JSON.stringify(state));
+  }
+
+  function showToast(msg) {
+    var t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(showToast._timer);
+    showToast._timer = setTimeout(function() { t.classList.remove("show"); }, 2200);
+  }
+
+  // ---------- meta ----------
+  function fillMetaInputs() {
+    document.getElementById("mElev").value = state.meta.elev || "";
+    document.getElementById("mSted").value = state.meta.sted || "";
+    document.getElementById("mType").value = state.meta.type || "Bedrift";
+    document.getElementById("mDato").value = state.meta.dato || "";
+    document.getElementById("mVeileder").value = state.meta.veileder || "";
+    document.getElementById("mLaerer").value = state.meta.laerer || "";
+  }
+
+  function wireMetaInputs() {
+    document.getElementById("mElev").addEventListener("input", function(e) { state.meta.elev = e.target.value; persistCurrent(); });
+    document.getElementById("mSted").addEventListener("input", function(e) { state.meta.sted = e.target.value; persistCurrent(); });
+    document.getElementById("mType").addEventListener("change", function(e) { state.meta.type = e.target.value; persistCurrent(); });
+    document.getElementById("mDato").addEventListener("input", function(e) { state.meta.dato = e.target.value; persistCurrent(); });
+    document.getElementById("mVeileder").addEventListener("input", function(e) { state.meta.veileder = e.target.value; persistCurrent(); });
+    document.getElementById("mLaerer").addEventListener("input", function(e) { state.meta.laerer = e.target.value; persistCurrent(); });
+  }
+
+  // ---------- progress ----------
+  function renderProgress() {
+    var total = 0, done = 0;
+    state.categories.forEach(function(c) {
+      c.items.forEach(function(it) {
+        total++;
+        if (it.rating) done++;
+      });
+    });
+    document.getElementById("progressLabel").textContent = done + "/" + total + " punkter vurdert";
+    var ticksEl = document.getElementById("ticks");
+    ticksEl.innerHTML = "";
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < total; i++) {
+      var d = document.createElement("div");
+      d.className = "tick" + (i < done ? " done" : "");
+      frag.appendChild(d);
+    }
+    ticksEl.appendChild(frag);
+  }
+
+  // ---------- categories render ----------
+  function renderCategories() {
+    var host = document.getElementById("categories");
+    host.innerHTML = "";
+    var prevSection = null;
+    state.categories.forEach(function(cat) {
+      var sec = cat.section || "egne";
+      if (sec !== prevSection) {
+        host.appendChild(buildSectionDivider(SECTION_LABELS[sec] || "Andre kategorier"));
+        prevSection = sec;
+      }
+      host.appendChild(buildCategoryEl(cat));
+    });
+    renderProgress();
+  }
+
+  function buildSectionDivider(label) {
+    var h = document.createElement("h2");
+    h.className = "section-divider";
+    h.textContent = label;
+    return h;
+  }
+
+  function buildCategoryEl(cat) {
+    var el = document.createElement("div");
+    el.className = "category";
+    el.setAttribute("data-weight", cat.weight);
+    el.setAttribute("data-cat-id", cat.id);
+
+    var head = document.createElement("div");
+    head.className = "cat-head";
+
+    var nameInput = document.createElement("input");
+    nameInput.className = "cat-name-input";
+    nameInput.value = cat.name;
+    nameInput.addEventListener("input", function(e) { cat.name = e.target.value; persistCurrent(); });
+    head.appendChild(nameInput);
+
+    var weightSel = document.createElement("select");
+    weightSel.className = "weight-select";
+    ["høy", "middels", "lav"].forEach(function(w) {
+      var opt = document.createElement("option");
+      opt.value = w;
+      opt.textContent = WEIGHT_LABELS[w];
+      if (w === cat.weight) opt.selected = true;
+      weightSel.appendChild(opt);
+    });
+    weightSel.addEventListener("change", function(e) {
+      cat.weight = e.target.value;
+      el.setAttribute("data-weight", cat.weight);
+      persistCurrent();
+    });
+    head.appendChild(weightSel);
+
+    var catRemove = document.createElement("button");
+    catRemove.className = "cat-remove";
+    catRemove.type = "button";
+    catRemove.textContent = "✕";
+    catRemove.title = "Fjern kategori";
+    catRemove.addEventListener("click", function() {
+      if (confirm('Fjerne kategorien "' + cat.name + '"?')) {
+        state.categories = state.categories.filter(function(c) { return c.id !== cat.id; });
+        persistCurrent();
+        renderCategories();
+      }
+    });
+    head.appendChild(catRemove);
+
+    el.appendChild(head);
+
+    var itemsHost = document.createElement("div");
+    itemsHost.className = "items-host";
+    cat.items.forEach(function(item) {
+      itemsHost.appendChild(buildItemEl(cat, item));
+    });
+    el.appendChild(itemsHost);
+
+    var addRow = document.createElement("div");
+    addRow.className = "add-row";
+    var addInput = document.createElement("input");
+    addInput.type = "text";
+    addInput.placeholder = "Legg til eget observasjonspunkt …";
+    var addBtn = document.createElement("button");
+    addBtn.className = "add-link";
+    addBtn.type = "button";
+    addBtn.textContent = "+ Legg til";
+    function addNewItem() {
+      var txt = addInput.value.trim();
+      if (!txt) return;
+      var newItem = { id: uid(), text: txt, rating: null, note: "" };
+      cat.items.push(newItem);
+      itemsHost.appendChild(buildItemEl(cat, newItem));
+      addInput.value = "";
+      persistCurrent();
+      renderProgress();
+    }
+    addBtn.addEventListener("click", addNewItem);
+    addInput.addEventListener("keydown", function(e) { if (e.key === "Enter") { e.preventDefault(); addNewItem(); } });
+    addRow.appendChild(addInput);
+    addRow.appendChild(addBtn);
+    el.appendChild(addRow);
+
+    return el;
+  }
+
+  function buildItemEl(cat, item) {
+    var wrap = document.createElement("div");
+    wrap.className = "item";
+    wrap.setAttribute("data-item-id", item.id);
+
+    var row = document.createElement("div");
+    row.className = "item-row";
+
+    var textArea = document.createElement("textarea");
+    textArea.className = "item-text";
+    textArea.rows = 1;
+    textArea.value = item.text;
+    textArea.addEventListener("input", function(e) {
+      item.text = e.target.value;
+      autoGrow(textArea);
+      persistCurrent();
+    });
+    row.appendChild(textArea);
+
+    var removeBtn = document.createElement("button");
+    removeBtn.className = "item-remove";
+    removeBtn.type = "button";
+    removeBtn.textContent = "✕";
+    removeBtn.title = "Fjern punkt";
+    removeBtn.addEventListener("click", function() {
+      cat.items = cat.items.filter(function(i) { return i.id !== item.id; });
+      wrap.remove();
+      persistCurrent();
+      renderProgress();
+    });
+    row.appendChild(removeBtn);
+    wrap.appendChild(row);
+
+    var ratingRow = document.createElement("div");
+    ratingRow.className = "rating-row";
+    RATE_ORDER.forEach(function(val) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "rate-btn" + (item.rating === val ? " active" : "");
+      btn.setAttribute("data-val", val);
+      btn.textContent = RATE_LABELS[val];
+      btn.addEventListener("click", function() {
+        item.rating = (item.rating === val) ? null : val;
+        Array.prototype.forEach.call(ratingRow.children, function(b) {
+          b.classList.toggle("active", b.getAttribute("data-val") === item.rating);
+        });
+        persistCurrent();
+        renderProgress();
+      });
+      ratingRow.appendChild(btn);
+    });
+    wrap.appendChild(ratingRow);
+
+    var noteInput = document.createElement("input");
+    noteInput.type = "text";
+    noteInput.className = "note-input";
+    noteInput.placeholder = "Notat / eksempel fra besøket …";
+    noteInput.value = item.note;
+    noteInput.addEventListener("input", function(e) { item.note = e.target.value; persistCurrent(); });
+    wrap.appendChild(noteInput);
+
+    setTimeout(function() { autoGrow(textArea); }, 0);
+    return wrap;
+  }
+
+  function autoGrow(ta) {
+    ta.style.height = "auto";
+    ta.style.height = ta.scrollHeight + "px";
+  }
+
+  // ---------- helhet ----------
+  function fillHelhet() {
+    document.getElementById("hStyrker").value = state.helhet.styrker || "";
+    document.getElementById("hUtvikling").value = state.helhet.utvikling || "";
+    document.getElementById("hTiltak").value = state.helhet.tiltak || "";
+  }
+  function wireHelhet() {
+    document.getElementById("hStyrker").addEventListener("input", function(e) { state.helhet.styrker = e.target.value; persistCurrent(); });
+    document.getElementById("hUtvikling").addEventListener("input", function(e) { state.helhet.utvikling = e.target.value; persistCurrent(); });
+    document.getElementById("hTiltak").addEventListener("input", function(e) { state.helhet.tiltak = e.target.value; persistCurrent(); });
+  }
+
+  // ---------- add category ----------
+  function wireAddCategory() {
+    var showBtn = document.getElementById("btnShowAddCat");
+    var form = document.getElementById("addCatForm");
+    showBtn.addEventListener("click", function() {
+      form.classList.toggle("open");
+    });
+    document.getElementById("btnAddCat").addEventListener("click", function() {
+      var nameEl = document.getElementById("newCatName");
+      var weightEl = document.getElementById("newCatWeight");
+      var name = nameEl.value.trim();
+      if (!name) { nameEl.focus(); return; }
+      state.categories.push({ id: uid(), section: "egne", name: name, weight: weightEl.value, items: [] });
+      nameEl.value = "";
+      persistCurrent();
+      renderCategories();
+      form.classList.remove("open");
+    });
+  }
+
+  // ---------- new / save / delete ----------
+  function wireTopActions() {
+    document.getElementById("btnSave").addEventListener("click", function() {
+      var history = loadHistory();
+      state.updatedAt = new Date().toISOString();
+      if (!state.createdAt) state.createdAt = state.updatedAt;
+      var idx = history.findIndex(function(v) { return v.id === state.id; });
+      if (idx >= 0) history[idx] = state; else history.unshift(state);
+      safeSet(HISTORY_KEY, JSON.stringify(history));
+      persistCurrent();
+      showToast("Besøk lagret i historikk");
+    });
+
+    document.getElementById("btnDeleteCurrent").addEventListener("click", function() {
+      if (!confirm("Slette gjeldende besøk fra skjermen (og fra historikk hvis lagret)?")) return;
+      var history = loadHistory().filter(function(v) { return v.id !== state.id; });
+      safeSet(HISTORY_KEY, JSON.stringify(history));
+      state = defaultState();
+      persistCurrent();
+      fullRender();
+      showToast("Besøk slettet");
+    });
+
+    document.getElementById("btnPrint").addEventListener("click", function() {
+      window.print();
+    });
+
+    document.getElementById("btnExport").addEventListener("click", exportReport);
+  }
+
+  function buildReportText() {
+    var lines = [];
+    lines.push("PRAKSISBESØK — OBSERVASJONSRAPPORT");
+    lines.push("=====================================");
+    lines.push("Elev: " + (state.meta.elev || "–"));
+    lines.push("Praksissted: " + (state.meta.sted || "–") + " (" + (state.meta.type || "–") + ")");
+    lines.push("Dato: " + (state.meta.dato || "–"));
+    lines.push("Veileder på stedet: " + (state.meta.veileder || "–"));
+    lines.push("Faglærer: " + (state.meta.laerer || "–"));
+    lines.push("");
+    var prevSection = null;
+    state.categories.forEach(function(cat) {
+      var sec = cat.section || "egne";
+      if (sec !== prevSection) {
+        lines.push("===== " + (SECTION_LABELS[sec] || "Andre kategorier").toUpperCase() + " =====");
+        prevSection = sec;
+      }
+      lines.push("--- " + cat.name.toUpperCase() + " (" + WEIGHT_LABELS[cat.weight] + ") ---");
+      cat.items.forEach(function(it) {
+        var ratingText = it.rating ? RATE_LABELS[it.rating] : "Ikke vurdert";
+        lines.push("• " + it.text + " — " + ratingText);
+        if (it.note) lines.push("  Notat: " + it.note);
+      });
+      lines.push("");
+    });
+    lines.push("--- HELHETSVURDERING OG OPPFØLGING ---");
+    lines.push("Styrker observert: " + (state.helhet.styrker || "–"));
+    lines.push("Utviklingsområder: " + (state.helhet.utvikling || "–"));
+    lines.push("Avtalte tiltak til neste besøk: " + (state.helhet.tiltak || "–"));
+    return lines.join("\n");
+  }
+
+  function exportReport() {
+    var text = buildReportText();
+    var fileSafeName = (state.meta.elev || "elev").replace(/[^a-zA-Z0-9æøåÆØÅ]+/g, "_");
+    var fileSafeDate = (state.meta.dato || "").replace(/-/g, "");
+    var filename = "praksisbesok_" + fileSafeName + (fileSafeDate ? "_" + fileSafeDate : "") + ".txt";
+
+    if (typeof claude === "undefined" || !claude || typeof claude.use !== "function") {
+      fallbackDownload(text, filename);
+      return;
+    }
+
+    try {
+      claude.use("downloads").then(function(downloads) {
+        if (!downloads) {
+          fallbackDownload(text, filename);
+          return;
+        }
+        downloads.save({ filename: filename, data: text }).then(function() {
+          showToast("Rapport lastet ned");
+        }).catch(function() {
+          fallbackDownload(text, filename);
+        });
+      }).catch(function() {
+        fallbackDownload(text, filename);
+      });
+    } catch (e) {
+      fallbackDownload(text, filename);
+    }
+  }
+
+  function fallbackDownload(text, filename) {
+    try {
+      var blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("Rapport lastet ned");
+    } catch (e) {
+      showToast("Kunne ikke laste ned – prøv utskrift i stedet");
+    }
+  }
+
+  function fullRender() {
+    fillMetaInputs();
+    renderCategories();
+    fillHelhet();
+  }
+
+  function init() {
+    state = loadCurrent();
+    fullRender();
+    wireMetaInputs();
+    wireHelhet();
+    wireAddCategory();
+    wireTopActions();
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();
+</script>
+</body>
+</html>
